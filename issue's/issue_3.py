@@ -2,13 +2,13 @@ import cv2
 
 from pd_func import gaussianFilter
 
-# Image loading =====================================================================================
+
 
 img = cv2.imread('figs\lua.tif.jpg', cv2.IMREAD_GRAYSCALE)
 
 image_content = 'jaspion'
 
-# Filtering and Saving ==============================================================================
+
 
 kernel_size_list = [5]  # k
 
@@ -21,7 +21,6 @@ for k in kernel_size_list:
 
         print('filtering parameters:', filtering_parameters)
 
-        # image saving
 
         file_name = './smoothing_filters/results_gaussian_filtering/{}_k{}n{}pdd{}_gaussian_filter.jpg'
 

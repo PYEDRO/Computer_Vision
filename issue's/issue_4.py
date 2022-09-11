@@ -25,7 +25,7 @@ for k_type in kernel_type_list:
 
         print('filtering parameters:', filtering_parameters)
 
-        # image saving
+
 
         file_name = './enhancement_filetrs/results_laplacian_filtering/{}_ktype{}n{}pdd{}_laplacian_filter.png'
 

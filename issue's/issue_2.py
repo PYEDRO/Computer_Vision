@@ -2,16 +2,16 @@ import cv2
 
 from pd_func import medianFilter
 
-# Image loading =====================================================================================
+
 
 img = cv2.imread(
-    'figs\lua.tif.jpg', cv2.IMREAD_GRAYSCALE)
+    'figs\images.jpg', cv2.IMREAD_GRAYSCALE)
 
 image_content = 'dbz'
 
-# Filtering and Saving ==============================================================================
 
-kernel_size_list = [3]
+
+kernel_size_list = [9]
 
 number_of_iterations_list = [1]
 
@@ -22,7 +22,6 @@ for k in kernel_size_list:
 
         print('filtering parameters:', filtering_parameters)
 
-        # image saving
 
         file_name = './smoothing_filters/results_median_filtering/{}_k{}n{}pdd{}_median_filter.jpg'
 

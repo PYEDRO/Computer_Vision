@@ -5,15 +5,15 @@ import numpy as np
 
 from pd_func import meanFilter
 
-# Image loading =====================================================================================
+
 
 img = cv2.imread('figs\lua.tif.jpg', cv2.IMREAD_GRAYSCALE)
 
 image_content = 'chaplin'
 
-# Filtering and Saving ==============================================================================
 
-kernel_size_list = [3]
+
+kernel_size_list = [5]
 
 number_of_iterations_list = [1, 5]
 
@@ -24,7 +24,7 @@ for k in kernel_size_list:
 
         print('filtering parameters:', filtering_parameters)
 
-        # image saving
+
 
         file_name = './smoothing_filters/results_mean_filtering/{}_k{}n{}pdd{}_mean_filter.jpg'
 

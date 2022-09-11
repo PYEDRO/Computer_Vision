@@ -3,7 +3,7 @@ import cv2
 from pd_func import histogramCalc
 
 
-# Image loading =====================================================================================
+
 
 image_content = 'cameraman'
 
@@ -12,12 +12,12 @@ img_path = 'figs\lua.tif.jpg'
 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 
 
-# Histogram =========================================================================================
+
 
 histogram = histogramCalc(image_content, img)
 
 
-# Image displaying ==================================================================================
+
 
 histogram_image = cv2.imread(histogram)
 

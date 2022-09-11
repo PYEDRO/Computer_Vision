@@ -2,7 +2,7 @@ import cv2
 
 from pd_func import sobelFilter
 
-# Image loading =====================================================================================
+
 
 image_content = 'lavotanovo'
 
@@ -10,11 +10,11 @@ img_path = 'figs\lua.tif.jpg'
 
 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 
-# Filtering =========================================================================================
+
 
 sobel_h, sobel_v, sobel_image = sobelFilter(img)
 
-# Image displaying ==================================================================================
+
 
 cv2.imshow('h sobel', sobel_h)
 cv2.imshow('v sobel', sobel_v)
