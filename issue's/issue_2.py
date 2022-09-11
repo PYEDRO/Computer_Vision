@@ -11,7 +11,7 @@ image_content = 'dbz'
 
 
 
-kernel_size_list = [9]
+kernel_size_list = [1]
 
 number_of_iterations_list = [1]
 
