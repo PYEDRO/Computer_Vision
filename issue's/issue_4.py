@@ -5,17 +5,21 @@ from pd_func import laplacianFilter
 
 
 
-image_content = 'dragonball'
+image_content = 'moça'
 
 img_path = 'figs\imhtu.jpg'
 
 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 
+cv2.imshow('laplacian', img)
+
+cv2.waitKey(0)
+
 
 
 kernel_type_list = [0, 1, 2, 3]
 
-number_of_iterations_list = [1]
+number_of_iterations_list = [3]
 
 for k_type in kernel_type_list:
     for n in number_of_iterations_list:

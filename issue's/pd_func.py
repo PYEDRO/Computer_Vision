@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math as m
 
-# MEAN FILTER =======================================================================================
+# MEAN FILTER
 
 def meanFilter(image_content, img, k, n, padding):
        
@@ -28,13 +28,10 @@ def meanFilter(image_content, img, k, n, padding):
 
         new_line, new_column = (holdpdd.shape)
 
-        # Based on the Professor Navar's lecture.
 
         holdpdd[c: new_line - c, c: new_column - c] = img
         
         mean_image = holdpdd.copy()
-       
-        #print('Padded image dimensions:', holdpdd.shape)
 
 
         # Convolution
@@ -80,7 +77,7 @@ def meanFilter(image_content, img, k, n, padding):
     return final_image, filtering_parameters_list
 
 
-# MEDIAN FILTER =====================================================================================
+# MEDIAN FILTER 
 
 def medianFilter(image_content, img, k, n, padding):
 
@@ -93,7 +90,7 @@ def medianFilter(image_content, img, k, n, padding):
 
     kernel = np.ones((k, k))
 
-    c = int(k/2) # Just do simplify; k is the kernel dimension (k x k)
+    c = int(k/2) 
  
 
     if padding == 1:
@@ -104,13 +101,13 @@ def medianFilter(image_content, img, k, n, padding):
 
         new_line, new_column = (holdpdd.shape)
 
-        # Based on the Professor Navar's lecture.
+        
 
         holdpdd[c: new_line - c, c: new_column - c] = img
         
         median_image = holdpdd.copy()
        
-        #print('Padded image dimensions:', holdpdd.shape)
+       
 
 
         # Convolution
@@ -148,12 +145,12 @@ def medianFilter(image_content, img, k, n, padding):
 
                     median_list = []
 
-                    #Alternative to the np.median() method
+                    
 
                     for h in range(median.shape[0]):
                         for j in range(median.shape[1]):
 
-                            median_list.append(median[h][j]) # Could have used numpy reshape
+                            median_list.append(median[h][j]) 
                             
                             sorted_list = sorted(median_list)
 
@@ -170,9 +167,9 @@ def medianFilter(image_content, img, k, n, padding):
     return final_image, filtering_parameters_list
 
 
-# GAUSSIAN FILTER ===================================================================================
+# GAUSSIAN FILTER 
 
-# To generate the gaussian kernel. Based on the Professor Navar's code and Gonzalez and Woods (2008)
+
 
 def gaussianKernel(d1, d2):
   
@@ -507,21 +504,208 @@ def sobelFilter(img):
     return sobel_h_normalized, sobel_v_normalized, final_image
 
 # Histogram functions
+def histogramCalc(image_content, img):
 
-def hist_equa(img, img_context):
-    h,w= (img.shape[:2])
-    print('height', h)
-    print('weight', w)
+    frequency_vector = np.zeros(2**8)
 
-    h = np.zeros(256)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            h[img[i, j]] += 1
 
-    eixo_x = list(range(256))
-    histograma = (plt.figure(2))
-    
-    histograma.savefig('histogram/results_histogram/{}_histogram.png'.format(img_context), dpi = 150)
-    hist_save = 'histogram/results_histogram/{}_histogram.png'.format(img_context)
-    
+            frequency_vector[img[i][j]] = frequency_vector[img[i][j]] + 1
+
+    intensity_values = []
+
+    for i in range(256):
+        intensity_values.append(i)
+
+    plt.rcParams.update({'font.size': 16})
+
+    histogram = plt.figure(figsize=(12, 8))
+
+    plt.title('Histogram', fontsize=22, fontweight='bold')
+    plt.xlabel('Intensity values', fontsize=18)
+    plt.ylabel('Frequency', fontsize=18)
+    plt.bar(intensity_values, frequency_vector, color='#172381')
+
+    histogram.savefig(
+        'Lapisco\Computer Vision\Tentativa\\figs'.format(image_content), dpi=150)
+
+    hist_save = 'histogram/results_histogram/{}_histogram.png'.format(
+        image_content)
+
     return hist_save
+# Hist_equal fuctions
+
+
+def histogramEqualization(image_content, img):
+
+    # Plot image histogram
+    frequency_vector = np.zeros(2**8)
+
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+
+            frequency_vector[img[i][j]] = frequency_vector[img[i][j]] + 1
+
+    intensity_values = []
+
+    for i in range(256):
+        intensity_values.append(i)
+
+    # Configure, plot and save histogram
+
+    plt.rcParams.update({'font.size': 16})
+
+    histogram = plt.figure(figsize=(12, 8))
+
+    cdf = frequency_vector.cumsum()
+    cdf_normalized = cdf * float(frequency_vector.max()) / cdf.max()
+
+    plt.plot(cdf_normalized, color='r')
+    # , fontname='Times New Roman')
+    plt.title('Histogram', fontsize=22, fontweight='bold')
+    plt.xlabel('Intensity values', fontsize=18)
+    plt.ylabel('Frequency', fontsize=18)
+    plt.bar(intensity_values, frequency_vector, color='#172381')
+    plt.legend(('CDF', 'Histogram'), loc='upper center')
+    #plt.show()
+    histogram.savefig(
+        'results_histogram_equalization/{}_cdf_equalized_histogram.png'.format(
+            image_content),
+        dpi=150)
+
+    hist_save = 'histogram/results_histogram_equalization/{}_cdf_equalized_histogram.png'.format(
+        image_content)
+
+    # Histogram Equlization begins ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    # Vector to compute intensity values occurrence
+
+    frequency_vector = np.zeros(2**8)
+
+    # Cumulative distribution function vector
+
+    cdf = np.zeros(2**8)
+
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+
+            frequency_vector[img[i][j]] = frequency_vector[img[i][j]] + 1
+
+    # Intensity values list
+
+    intensity_values = []
+
+    for i in range(256):
+        intensity_values.append(i)
+
+    # Probability density function
+
+    pdf = frequency_vector / (img.shape[0] * img.shape[1])
+
+    # Cumulative distribution function vector
+
+    for j in range(1, frequency_vector.shape[0]):
+
+        cdf[j] = cdf[j-1] + pdf[j]
+
+    # sk
+
+    equalized_frequency = np.round(cdf*img.max())
+
+    #
+    equalized_image = img.copy()
+
+    for m in range(equalized_image.shape[0]):
+        for n in range(equalized_image.shape[1]):
+
+            equalized_image[m][n] = equalized_frequency[equalized_image[m][n]]
+
+    # Recalculate histogram vector
+
+    eqalized_frequency_vector = np.zeros(2**8)
+
+    for i in range(equalized_image.shape[0]):
+        for j in range(equalized_image.shape[1]):
+
+            eqalized_frequency_vector[equalized_image[i][j]
+                                      ] = eqalized_frequency_vector[equalized_image[i][j]] + 1
+
+    intensity_values = []
+
+    for i in range(256):
+        intensity_values.append(i)
+
+    # Calculate cumulative sum using numpy
+
+    equalized_cdf_normalized = np.cumsum(eqalized_frequency_vector) * float(
+        eqalized_frequency_vector.max()) / np.cumsum(eqalized_frequency_vector).max()
+
+    plt.rcParams.update({'font.size': 16})
+
+    equalized_histogram = plt.figure(figsize=(12, 8))
+
+    # Histogram plotting and saving
+
+    plt.plot(equalized_cdf_normalized, color='r')
+    # , fontname = 'Times New Roman')
+    plt.title('Equalized histogram', fontsize=22, fontweight='bold')
+    plt.xlabel('Intensity values', fontsize=18)
+    plt.ylabel('Frequency', fontsize=18)
+    plt.bar(intensity_values, eqalized_frequency_vector, color='#172381')
+    # , fontsize = 'small')
+    plt.legend(('CDF', 'Histogram'), loc='upper center')
+    #plt.show()
+    equalized_histogram.savefig(
+        'histogram/results_histogram_equalization/{}_equalized_histogram.png'.format(
+            image_content),
+        dpi=150)
+
+    eq_hist_save = 'histogram/results_histogram_equalization/{}_cdf_equalized_histogram.png'.format(
+        image_content)
+
+    return hist_save, eq_hist_save, equalized_image
+
+# Threshold
+import numpy as np
+
+def threshold(img, th):
+
+    global_th_image = img.copy()
+
+    print(img.shape)
+
+    for i in range(0, img.shape[0]):
+        for j in range(0, img.shape[1]):
+
+            if global_th_image[(i, j)] > th:
+
+                global_th_image[(i, j)] = 255
+
+            else:
+                global_th_image[(i, j)] = 0
+
+    return global_th_image.astype(np.uint8), th
+
+
+# MULTIPLE THRESHOLD 
+
+def multiThreshold(img, th1, th2):
+
+    multi_th_image = img.copy()
+
+    for rep in range(1):
+        for i in range(0, img.shape[0]):
+            for j in range(0, img.shape[1]):
+
+                if multi_th_image[(i, j)] > th2:
+
+                    multi_th_image[(i, j)] = 255
+
+                elif th1 < multi_th_image[(i, j)] <= th2:
+                    multi_th_image[(i, j)] = 127
+
+                else:
+                    multi_th_image[(i, j)] = 0
+
+    return multi_th_image.astype(np.uint8), th1, th2

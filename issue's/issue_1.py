@@ -9,7 +9,7 @@ from pd_func import meanFilter
 
 img = cv2.imread('figs\lua.tif.jpg', cv2.IMREAD_GRAYSCALE)
 
-image_content = 'chaplin'
+image_content = 'lua'
 
 
 

@@ -7,11 +7,11 @@ from pd_func import medianFilter
 img = cv2.imread(
     'figs\images.jpg', cv2.IMREAD_GRAYSCALE)
 
-image_content = 'dbz'
+image_content = 'menina'
 
 
 
-kernel_size_list = [1]
+kernel_size_list = [5]
 
 number_of_iterations_list = [1]
 

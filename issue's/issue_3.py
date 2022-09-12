@@ -3,16 +3,14 @@ import cv2
 from pd_func import gaussianFilter
 
 
+img = cv2.imread('figs\images.jpg', cv2.IMREAD_GRAYSCALE)
 
-img = cv2.imread('figs\lua.tif.jpg', cv2.IMREAD_GRAYSCALE)
-
-image_content = 'jaspion'
-
+image_content = 'menina'
 
 
-kernel_size_list = [5]  # k
+kernel_size_list = [3]  # k
 
-number_of_iterations_list = [1]  # n
+number_of_iterations_list = [3]  # n
 
 for k in kernel_size_list:
     for n in number_of_iterations_list:
